@@ -1,6 +1,6 @@
 from App.models import Karma
 from App.database import db
-from .review import (get_total_positive_review_starRating, get_total_negative_review_starRating)
+from .review import (get_total_positive_review_starRating, get_total_negative_review_starRating, get_unique_reviewers_count)
 from .accomplishment import (get_total_accomplishment_points)
 from .incidentReport import (get_total_incident_points)
 from .transcript import (calculate_academic_score)
@@ -40,14 +40,33 @@ def create_karma(studentID):
 
 
 def calculate_review_points(studentID):
-  karma = get_karma(studentID)
-  review_points = get_total_positive_review_starRating(studentID) + get_total_negative_review_starRating(studentID)
+  
+  karma = get_karma(studentID) # fetching the current karma for the student
+  
+  # Get total star ratings for positive and negative reviews
+  positive_star_rating = get_total_positive_review_starRating(studentID)
+  negative_star_rating = get_total_negative_review_starRating(studentID)
+
+  # Unique reviewer count: integrity factor for karma calculation
+
+  unique_reviewers_count = get_unique_reviewers_count(studentID)
+  integrity_factor = 1.0 + (unique_reviewers_count * 0.1) # bonus for more diverse reviewers
+
+  review_points = (positive_star_rating * 1.0) + (negative_star_rating * -0.5)
+
+  # Apply the integrity factor (adjustment based on unique reviewers)
+
+  review_points *= integrity_factor
+  #review_points = get_total_positive_review_starRating(studentID) + get_total_negative_review_starRating(studentID)
+
+  # Updating karma
   if karma:
     karma.reviewsPoints = review_points
     db.session.commit()
     return True
   else:
     return False
+
 
 
 def calculate_accomplishment_points(studentID):
