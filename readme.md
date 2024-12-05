@@ -124,7 +124,7 @@ $ flask db --help
 
 ```bash
 $ flask add_admin <username> <firstname> <lastname> <email> <password> <faculty>
-$ flask search_student Billy 
+$ flask search_student <student_id> 
 $ flask notify_students <message>
 $ flask update_karma <student_id>
 $ flask assign_badge <student_id> <badge_name> <details> <image_link> <student_seen>
