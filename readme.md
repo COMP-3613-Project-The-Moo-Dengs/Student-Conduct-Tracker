@@ -120,6 +120,18 @@ $ flask db upgrade
 $ flask db --help
 ```
 
+# CLI Commands
+
+```bash
+$ flask add_admin <username> <firstname> <lastname> <email> <password> <faculty>
+$ flask search_student Billy 
+$ flask notify_students <message>
+$ flask update_karma <student_id>
+$ flask assign_badge <student_id> <badge_name> <details> <image_link> <student_seen>
+$ flask generate_leaderboard
+$ flask manage_accomplishment <action> <accomplishment_details>
+```
+
 # Testing
 
 ## Unit & Integration
